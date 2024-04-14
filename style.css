@@ -1,0 +1,304 @@
+@charset "UTF-8";
+/*
+Theme Name: Mota
+Theme URI: http://localhost:10046
+Author: Brisse frédéric
+Author URI: https://fred80fr.gumroad.com/
+Description: Thème sur la photographie ! 
+Requires at least: WordPress 6.5
+Version: 1.0
+Tags: photographie, mota, acf, cpt
+Text Domain: photographie-mota
+*/
+@font-face {
+  font-family: "Poppins-Light-300";
+  src: url("fonts/Poppins-Light-300.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 300;
+}
+@font-face {
+  font-family: "Poppins-Medium-500";
+  src: url("fonts/Poppins-Medium-500.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+}
+@font-face {
+  font-family: "SpaceMono-Regular-400";
+  src: url("fonts/SpaceMono-Regular-400.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SpaceMono-Italic-400";
+  src: url("fonts/SpaceMono-Italic-400.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 400;
+}
+@font-face {
+  font-family: "SpaceMono-Bold-700";
+  src: url("fonts/SpaceMono-Bold-700.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700;
+}
+@font-face {
+  font-family: "SpaceMono-BoldItalic-700";
+  src: url("fonts/SpaceMono-BoldItalic-700.woff2") format("woff2");
+  font-style: italic;
+  font-weight: 700;
+}
+/* Animation CSS */
+@keyframes disparition {
+  from {
+    opacity: 1;
+    z-index: 999;
+  }
+  to {
+    opacity: 0;
+    z-index: -1;
+  }
+}
+@keyframes apparition {
+  from {
+    opacity: 0;
+    z-index: -1;
+  }
+  to {
+    opacity: 1;
+    z-index: 999;
+  }
+}
+@keyframes pulse {
+  0% {
+    transform-origin: center -60px;
+    transform: scale(1.08, 0.92);
+  }
+  50% {
+    transform-origin: center 60px;
+    transform: scale(0.92, 1.08);
+  }
+  100% {
+    transform-origin: center -60px;
+    transform: scale(1.07, 0.93);
+  }
+}
+body {
+  width: 1440px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  margin: 0 auto 0 auto;
+}
+
+header {
+  margin: 0;
+  min-width: 100%;
+  height: 1042px;
+}
+
+.top-barre {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  min-height: 80px;
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff;
+  justify-content: space-around;
+  align-items: center;
+}
+.top-barre img {
+  margin-right: 50px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  font-family: "SpaceMono-Regular-400", sans-serif;
+  display: inline;
+  font-size: 16px;
+  margin-left: 50px;
+}
+li a {
+  transition: all 0.5s;
+}
+li a:link {
+  text-decoration: none;
+  color: #000000;
+}
+li a:visited {
+  text-decoration: none;
+  color: #000000;
+}
+
+li a:hover {
+  text-shadow: #e00000 0.4px 0 1.5px;
+}
+
+.banniere {
+  min-width: 100%;
+  height: 962px;
+  background-image: url("./img/header-photo-event.jpg");
+  text-align: center;
+  vertical-align: middle;
+}
+
+p.event {
+  margin: 0;
+  padding-top: 380px;
+  font-family: "SpaceMono-Bold-700", sans-serif;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0);
+  font-size: 96px;
+  -webkit-text-stroke-width: 3px;
+  -webkit-text-stroke-color: #ffffff;
+  text-align: center;
+  align-content: center;
+}
+
+.contenaire-principal {
+  background-color: #ffffff;
+  min-width: 100%;
+  min-height: 100px;
+}
+
+footer {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin: auto;
+  min-width: 100%;
+  height: 40px;
+  background-color: #ffffff;
+  justify-content: space-around;
+  align-items: center;
+  border-top: solid 1px #000000;
+}
+footer li {
+  margin-left: 80px;
+}
+
+/* Debut CSS de la modale de contact */
+.contact-modal {
+  display: inherit; /* Permet la gestion de l'affichage */
+  position: fixed; /* Sa position ne doit pas influencer le reste, elle est donc fixe. */
+  opacity: 0;
+  z-index: -1; /* Notre modale de contact doit être en haut de la pile */
+  width: 100%; /* Pleine largeur */
+  height: 100%; /* Pleine hauteur */
+  overflow: auto; /* Scroll si nécessaire */
+  background-color: rgba(0, 0, 0, 0.98); /* mettre un fond qui assombrit */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.contact-modal-disparait {
+  animation: disparition 2s ease-in-out forwards;
+}
+
+.contact-modal-apparait {
+  animation: apparition 2s ease-in-out forwards;
+}
+
+span.contact-titre {
+  position: relative;
+  display: inherit;
+  top: 50px;
+  margin: 0 auto;
+  width: 90%;
+  height: 98px;
+  background-image: url("./img/contact.svg");
+  background-position-x: center;
+}
+
+/* Gestion du contenu de la modale*/
+.contact-contenu {
+  background-color: #ffffff;
+  margin: 2% auto; /* On centre le contenu et on met une marge de 2% en vertical */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%; /* Largeur de la zone blanche du formulaire de contact */
+  height: calc(100vh - 80px);
+  text-align: center;
+}
+
+/* Gestion de la croix pour fermer la modale */
+.contact-close {
+  margin: -15px -5px 0 0;
+  color: #000000;
+  float: right;
+  font-size: 50px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.contact-close:hover {
+  animation: pulse 1.2s ease-in-out alternate infinite;
+}
+
+.close-contact:hover, .close-contact:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Configuration de l'affichage du formulaire de contact */
+#formulaire-contact {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  align-items: center;
+  margin: 70px auto;
+}
+#formulaire-contact form {
+  background-color: rgba(0, 0, 0, 0);
+  margin: auto;
+  padding: 10px;
+  width: 70%;
+}
+#formulaire-contact label {
+  font-family: "Poppins-Medium-500";
+  font-size: 12px;
+  color: #000000;
+  margin-top: 10px;
+  line-height: 18px;
+}
+#formulaire-contact input, #formulaire-contact textarea, #formulaire-contact select {
+  padding: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  width: 260px;
+  height: 40px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3) inset;
+}
+#formulaire-contact textarea {
+  min-height: 130px;
+  max-width: 260px;
+  resize: none;
+}
+#formulaire-contact input[type=submit] {
+  width: 260px;
+  height: 50px;
+  margin: 20px auto;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+#formulaire-contact input.wpcf7-form-control.wpcf7-submit {
+  display: block;
+  margin: 20px auto;
+}
+
+.wpcf7-response-output {
+  color: red;
+  margin-top: -100px !important;
+  border-color: #000000 !important;
+}
+
+/* Fin CSS de la modale de contact */
+
+/*# sourceMappingURL=style.css.map */
