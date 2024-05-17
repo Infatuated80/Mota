@@ -17,7 +17,21 @@
             <?php wp_nav_menu(['theme_location' => 'header']) ?>   
         </div>
 
-        <div class="banniere">
-            <p class="event">Photographe Event</p>
+        <div class="top-barre-mobile">
+            <div>
+                <img class="mobile" src="<?php echo get_stylesheet_directory_uri(); ?>/img/logo.svg" alt="Logo Mota">
+            </div>
+            <div>
+                <img class="hamburger" id="btn-hamburger" src="<?php echo get_stylesheet_directory_uri(); ?>/img/icone_menu.svg" alt="Menu hamburger">
+            </div>
         </div>
+            <div class="menu-mobile" id="menu-mobile">
+                <div class="en-tete">
+                    <img class="mobile" src="<?php echo get_stylesheet_directory_uri(); ?>/img/logo.svg" alt="Logo Mota">    
+                    <img class="croix-btn" id="croix-btn" src="<?php echo get_stylesheet_directory_uri(); ?>/img/croix.svg" alt="Croix du menu mobile">
+                </div>
+                
+                <?php wp_nav_menu(['theme_location' => 'header']); ?>
+            </div>
+        <hr />
     </header>

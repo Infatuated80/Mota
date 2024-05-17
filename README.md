@@ -1,2 +1,2 @@
 # Mota
-Ici, vous trouverez le projet 11: Mota. Créez un répertoire mota dans vos thèmes wordpress et glissez tout le contenu du repository. Activez le thème depuis Wordpress pour le rendre opérationnel. 
+Ici, vous trouverez le projet 11: Mota. Créez un répertoire mota dans vos thèmes wordpress et glissez tout le contenu du repository. Activez le thème depuis Wordpress pour le rendre opérationnel. st

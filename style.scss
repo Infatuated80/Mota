@@ -118,8 +118,46 @@ $gris-clair: #E5E5E5;
     }
 }
 
+@keyframes pulse_v2 
+{
+    0% {
+        transform-origin: center center;
+        transform: scale(1);
+    }
+
+    50% {
+        transform-origin: center center;
+        transform: scale(0.7);
+    }
+
+    100%{
+        transform-origin: center center;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse_v3 
+{
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100%{
+        transform: scale(1);
+    }
+}
+*
+{
+    outline: none; //Retire le liseré lorsqu'un élément est selectionné
+}
+
 body 
 {
+    outline: none;
     width: 1440px;
     display: flex;
     flex-direction: column;
@@ -127,18 +165,37 @@ body
     margin: 0 auto 0 auto;
 }
 
+// Le menu pour mobile ne doit pas s'afficher si on est en desktop //
+.menu-mobile
+    {
+        display: none;
+    }
+
 header 
 {
     margin: 0;
     min-width: 100%;
-    height: calc(962px + 80px);
+    height: auto;
+
+    hr {
+        padding: 0;
+        margin: 0 0 2px 0;
+        height: 0.5px;
+        filter: blur(1.2px);
+        color:rgba(0, 0, 0, 0.5);
+    }
+}
+
+.top-barre-mobile
+{
+    display: none;
 }
 
 .top-barre 
 {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    min-width: 100%;
     min-height: 80px;
     margin: 0;
     padding: 0;
@@ -148,7 +205,7 @@ header
 
     img 
     {
-        margin-right: 50px;
+        margin-right: 20%;
     }
 }
 
@@ -187,17 +244,17 @@ li
 
 li a:hover 
     {   
-        //transition d'ombre pour le hover du menu.
-        text-shadow: #e00000 0.4px 0 1.5px;
+        font-family: 'SpaceMono-Bold-700';
     }
 
 .banniere
 {
-    min-width: 100%;
+    width: 1440px;
     height: 962px;
-    background-image: url("./img/header-photo-event.jpg");
-    text-align: center;
-    vertical-align: middle;   
+    background-image: url(./img/header-photo-event.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 p.event
@@ -213,13 +270,6 @@ p.event
     text-align: center;
     align-content: center;
 } 
-
-.contenaire-principal
-{
-    background-color: $blanc;
-    min-width: 100%;
-    min-height: 100px;
-}
 
 footer
 {
@@ -247,11 +297,11 @@ footer
         display:inherit; /* Permet la gestion de l'affichage */
         position: fixed; /* Sa position ne doit pas influencer le reste, elle est donc fixe. */
         opacity: 0;
-        z-index: -1; /* Notre modale de contact doit être en haut de la pile */
+        z-index: -10; /* Notre modale de contact doit être en bas de la pile */
         width: 100%; /* Pleine largeur */
         height: 100%; /* Pleine hauteur */
         overflow: auto; /* Scroll si nécessaire */
-        background-color: rgba(0, 0, 0, 0.98); /* mettre un fond qui assombrit */
+        background-color: rgba(0, 0, 0, 0.8); /* mettre un fond qui assombrit */
         top: 0;
         left: 0;
         bottom: 0;
@@ -261,41 +311,45 @@ footer
     .contact-modal-disparait 
     {
         animation: disparition 2s ease-in-out forwards;
+        z-index: -10;
     }
 
     .contact-modal-apparait
     {
         animation: apparition 2s ease-in-out forwards;
+        z-index: 999; //Notre modale de contact doit être en haut de la pile !
     }
 
     span.contact-titre 
     {
         position: relative;
         display:inherit;
-        top: 50px;
-        margin: 0 auto;
-        width: 90%;
+        top: 60px;
+        margin: 0 0;
+        padding: 0;
+        width: 100%;
         height: 98px;
         background-image: url("./img/contact.svg");
         background-position-x: center;
+        object-fit: cover;
     }
 
-    /* Gestion du contenu de la modale*/
+    /* Gestion du contenu de la modale */
     .contact-contenu 
     {
         background-color: $blanc;
         margin: 2% auto; /* On centre le contenu et on met une marge de 2% en vertical */
-        padding: 20px;
+        padding: 2px;
         border: 1px solid #888;
         width: 30%; /* Largeur de la zone blanche du formulaire de contact */
-        height: calc(100vh - 80px);
+        height: calc(100vh - 20px);
         text-align: center;
     }
 
     /* Gestion de la croix pour fermer la modale */
     .contact-close 
     {
-        margin: -15px -5px 0 0;
+        margin: 0px 5px 0 0;
         color: $noir;
         float: right;
         font-size: 50px;
@@ -331,6 +385,11 @@ footer
             width:70%;
         }
 
+        p
+        {
+            text-align: left;
+        }
+
         label 
         {   
             font-family: 'Poppins-Medium-500';
@@ -347,7 +406,7 @@ footer
             border-radius:5px;
             width:260px;
             height:40px; 
-            box-shadow:1px 1px 2px rgba(0, 0, 0, 0.3) inset;
+            //box-shadow:1px 1px 2px rgba(0, 0, 0, 0.3) inset;
         }
 
         textarea 
@@ -362,8 +421,13 @@ footer
             width: 260px;
             height: 50px;
             margin: 20px auto;
-            box-shadow:1px 1px 1px rgba(0, 0, 0, 0.3);
+            //box-shadow:1px 1px 1px rgba(0, 0, 0, 0.3);
             cursor:pointer; // Modifie le pointeur de la souris au survol pour faire comprendre qu'une action est possible.
+
+            &:hover
+            {
+                background-color: $gris-fonce;
+            }
         }
 
         input.wpcf7-form-control.wpcf7-submit 
@@ -379,3 +443,1205 @@ footer
         border-color: $noir!important;
       }
 /* Fin CSS de la modale de contact */
+
+/* Début gestion des photos en mode single */
+    main
+    {
+        display: flex;
+        flex-direction: column;
+        min-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .separation 
+    {
+        min-width: 80%;
+        margin: 0 auto 20px auto;
+    }
+
+    .container-info
+    {
+        margin: 2px auto 0 auto;
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+        min-width: 80%;
+
+        h2 
+        {
+            max-width: 300px;
+            font-family: 'SpaceMono-Italic-400', sans-serif;
+            font-size: 66px;
+            line-height: 70px; //pour mieux aérer le titre
+            text-transform: uppercase;
+        }
+
+        p 
+        {
+        font-family: 'SpaceMono-Regular-400', sans-serif;
+        font-size: 14px;
+        text-transform: uppercase;
+        }
+
+        .vignette-moyenne 
+        {
+            width: 50%;
+            height: auto;
+            overflow: hidden;
+
+            img 
+            {
+                width: 100%;
+                height: auto;
+                object-fit: fill;
+                object-position:center;
+            }
+        }
+
+        .info 
+        {
+            width: 50%;
+        } 
+
+        hr 
+        {
+            width: 97%;
+            margin: 0;
+            padding: 0;
+        }
+    }
+
+    .interet
+    {
+        width: 100%;
+        height: 118px;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        p 
+        {
+            font-family: 'Poppins-Light-300';
+            font-size: 14px;
+            line-height: 21px;
+            font-weight: 300;
+            margin-top: 33px;
+        }
+
+        button 
+        {
+            background-color: $gris-moyen; 
+            border: none;
+            border-radius: 2px;
+            color: $noir;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 12px;
+            font-family: 'SpaceMono-Regular-400';
+            padding: 20px 120px 20px 120px;
+            margin: 0 0 0 55px;
+
+            &:hover 
+            {
+                background-color: $gris-clair; 
+                cursor: pointer; // Modifie le pointeur de la souris au survol pour faire comprendre qu'une action est possible.
+            }
+        }
+    }
+
+    .aperçu 
+    {
+        flex-direction: row;
+        margin: 0 0 40px 0;
+        padding: 0;
+        width: 81px;
+        height: 71px;
+
+        span#vignette-interactive 
+        {
+            display:block;
+            width: 81px;
+            height: 71px;
+        }
+
+        img 
+        {  
+            object-fit: cover;  
+            object-position: center;
+            width: 81px;
+            height: 71px;  
+        } 
+
+        .fleche-gauche-petite 
+        {
+            width: 25px;
+            height: 15px;
+            background-image: url("./img/fleche-gauche-petite.png");
+            background-repeat: no-repeat;
+            object-fit: cover;
+            object-position: center;
+            cursor: pointer; // Modifie le pointeur de la souris au survol pour faire comprendre qu'une action est possible.
+        }
+
+        .fleche-droite-petite 
+        {
+            padding-left: 2px;
+            width: 25px;
+            height: 15px;
+            background-image: url("./img/fleche-droite-petite.png");
+            background-repeat: no-repeat;
+            object-fit: cover;
+            object-position: center;
+            cursor: pointer; // Modifie le pointeur de la souris au survol pour faire comprendre qu'une action est possible.
+        }
+    }
+
+    .navigation-aperçu 
+    {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    /* Début gestion des photos dynamiques pour la section vous-aimerez-aussi */
+        .section-preference 
+        {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+            margin: 0 auto 0 auto;
+
+            h3 
+            {
+                font-family: 'SpaceMono-Italic-400', sans-serif;
+                font-size: 18px;
+                line-height: 26.66px;
+                text-transform: uppercase;
+            }
+
+            .container-preference
+            {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: flex-end;  
+                margin-bottom: 100px;       
+
+                .container-image
+                {
+                    width: 564px;
+                    height: 495px; 
+                    overflow: hidden;
+
+                    .oeil 
+                    { 
+                        width: 564px;
+                        height: 495px;
+                        position: absolute;
+                        z-index: 3;
+                        background-image: url("./img/Icon_eye.svg");
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                    }
+
+                    .full-screen 
+                    {
+                        width:34px;
+                        height: 34px;
+                        position: absolute;
+                        z-index: 3;
+                        background-image: url("./img/Icon_fullscreen.svg");
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        //pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                        border-radius: 17px;
+                        margin: 15px 0 0 505px;
+                        border: solid 1.2px rgba($blanc, 1);
+
+                        &:hover
+                        {
+                            cursor: pointer;
+                            z-index: 5;
+                            animation: pulse 1s ease-in-out  infinite; // Petite animation pour actionner lightbox.
+                        }
+                    }
+
+                    p.ref-photo
+                    {
+                        z-index: 3;
+                        position: absolute;
+                        margin: 460px 0 0 20px;
+                        font-family: 'Poppins-Medium-500';
+                        font-size: 14px;
+                        line-height: 21px;
+                        color: $blanc;
+                        text-transform: uppercase;
+                        text-shadow: $noir 0.1em 0.1em 0.1em;
+                        pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                    }
+
+                    p.cat-photo
+                    {
+                        z-index: 3;
+                        position: absolute;
+                        margin: 460px 0 0 480px;
+                        font-family: 'SpaceMono-Regular-400';
+                        font-size: 14px;
+                        line-height: 20.73px;
+                        letter-spacing: 10%;
+                        color: $blanc;
+                        text-transform: uppercase;
+                        text-shadow: $noir 0.1em 0.1em 0.1em;
+                        pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                    }
+
+                    img 
+                    {
+                        position: relative;
+                        width: 564px;
+                        height: 495px; 
+                        object-fit: cover;  
+                        object-position: center;
+                        z-index:4;
+
+                        &:hover
+                        {
+                            filter:brightness(50%);
+                            z-index: 1;
+                        }
+                    }
+                }
+            }
+        }
+    /* Fin gestion des photos dynamiques pour la section vous-aimerez-aussi */    
+
+
+/* Fin gestion des photos en mode single */
+
+/* Début page accueil / archive photos */ 
+
+    .contenaire-filtre
+    {
+        z-index: 2;
+        margin: 60px auto -20px auto;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 80%;
+        height: 50px;
+        align-items: flex-start; 
+
+        select 
+        {
+            text-transform: uppercase;
+            font-family: "Poppins-Medium-500";    
+            font-size: 12px;
+            line-height: 18px;
+            letter-spacing: 3%;
+            font-weight: 500;
+            border-radius: 8px;
+            border: solid 1.3px #B8BBC2;
+            background-color: $blanc;
+            min-width: 260px;  
+            color: $bleu-fonce;
+            padding: 10px 2px 10px 2px;  
+            outline: none;    
+            overflow:hidden; // Pour éviter d'avoir un ascenseur
+
+            &:hover
+            {
+                border: solid 1.3px #215AFF;   
+            }
+        }   
+        
+        #select-categorie.allume 
+        {
+            border: solid 0px;
+
+            &:hover
+            {
+                border: solid 0;   
+            }
+        }
+
+        #select-categorie
+        {
+            border: solid 1.3px #B8BBC2; 
+
+            &:hover
+            {
+                border: solid 1.3px #215AFF;   
+            }
+        }
+
+        #select-format.allume 
+        {
+            border: solid 0px;
+
+            &:hover
+            {
+                border: solid 0;   
+            }
+        }
+
+        #select-format
+        {
+            border: solid 1.3px #B8BBC2; 
+
+            &:hover
+            {
+                border: solid 1.3px #215AFF;   
+            }
+        }
+
+        #select-trie.allume 
+        {
+            border: solid 0px;
+
+            &:hover
+            {
+                border: solid 0;   
+            }
+        }
+
+        #select-trie
+        {
+            border: solid 1.3px #B8BBC2; 
+
+            &:hover
+            {
+                border: solid 1.3px #215AFF;   
+            }
+        }
+
+        option
+        {
+            padding: 11px 24px 11px 24px;
+            text-transform: uppercase;
+            font-family: "Poppins-Medium-500";  
+            font-size: 12px;
+            line-height: 18px;
+            color: $bleu-fonce; 
+            outline: none;
+            cursor: pointer;
+
+                &:hover
+                {
+                    box-shadow: inset 0 0 10px 100px $rouge-clair;
+                    border: 0;
+                } 
+
+                &:checked
+                {
+                    box-shadow: inset 0 0 10px 100px $rouge-fonce;
+                    border: 0.1;
+                }
+
+                &:active
+                {
+                    box-shadow: inset 0 0 10px 100px $rouge-moyen;
+                    border: 0;
+                }
+            } ​
+        
+        select#select-format 
+        {
+            margin: 0 270px 0 0;             
+        }
+    }
+
+    .contenaire-requete
+    {
+        z-index: 1;
+        margin: 60px auto 60px auto;
+        display: flex;
+        flex-direction: column;
+        min-width: 80%;
+        height: auto;
+        font-size:0;
+    }
+
+    .contenaire-photo
+    {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        min-width: 100%;
+        height: auto; 
+        overflow: hidden;
+    }
+
+    .vignette-accueil
+    {
+        width: 564px;
+        height: 495px;
+        margin: 5px auto 5px auto;
+        overflow: hidden;
+        padding: 0;
+
+        .oeil 
+        { 
+            width: 564px;
+            height: 495px;
+            position: absolute;
+            z-index: 3;
+            background-image: url("./img/Icon_eye.svg");
+            background-position: center;
+            background-repeat: no-repeat;
+            pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+        }
+
+        .full-screen 
+        {
+            width:34px;
+            height: 34px;
+            position: absolute;
+            z-index: 4;
+            background-image: url("./img/Icon_fullscreen.svg");
+            background-position: center;
+            background-repeat: no-repeat;
+            //pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+            border-radius: 17px;
+            margin: 15px 0 0 505px;
+            border: solid 1.2px rgba($blanc, 1);
+            cursor: pointer;
+
+            &:hover 
+            {
+                cursor: pointer;
+                z-index: 5;
+                animation: pulse 1s ease-in-out  infinite; // Petite animation pour actionner lightbox.
+            }
+        }
+
+        p.ref-photo
+        {
+            z-index: 3;
+            position: absolute;
+            margin: 460px 0 0 20px;
+            font-family: 'Poppins-Medium-500';
+            font-size: 14px;
+            line-height: 21px;
+            color: $blanc;
+            text-transform: uppercase;
+            text-shadow: $noir 0.1em 0.1em 0.1em;
+            pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+        }
+
+        p.cat-photo
+        {
+            z-index: 3;
+            position: absolute;
+            margin: 460px 0 0 475px;
+            font-family: 'SpaceMono-Regular-400';
+            font-size: 14px;
+            line-height: 20.73px;
+            letter-spacing: 10%;
+            color: $blanc;
+            text-transform: uppercase;
+            text-shadow: $noir 0.1em 0.1em 0.1em;
+            pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+        }
+
+        img
+        {
+            position: absolute;
+            width: 564px;
+            height: 495px; 
+            object-fit: cover;  
+            object-position: center; 
+            z-index: 4;
+
+            &:hover
+            {
+                filter:brightness(50%);
+                z-index: 1;
+            }
+        }
+    }
+
+    .contenaire-charger-plus
+    {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        min-width: 80%;
+        margin: 0 auto 0 auto;
+        height: auto;
+
+        button 
+        {
+            font-family: "SpaceMono-Regular-400";
+            font-size: 12px;
+            line-height: 17.77px; 
+            margin: 15px auto 60px auto;
+            width: 272px;
+            height: 50px;
+            background-color: $gris-moyen;
+            outline: none;
+            border: none;
+            
+            &:hover 
+            {
+                transition: 0.5s;
+                font-family: "SpaceMono-Bold-700";
+                color: $blanc;
+                background-color: $noir;
+                cursor: pointer;
+            }
+        }
+    }
+
+/* Fin page accueil / archive photos */
+
+/* Début lightbox */
+    .lightbox-contenaire-principal
+    {
+        position:fixed;
+        display: flex;
+        flex-direction: column;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        z-index: -2; //En-dessous de la pile
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.9);
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+
+        .lightbox-croix
+        {
+            min-height: 10%;
+            img 
+            {
+                margin: 30px 0 0 96%; 
+                
+                &:hover
+                {
+                    cursor: pointer;
+                    animation: 1.2s pulse_v2 ease-in-out alternate infinite; 
+                }
+            }
+        }
+
+        .lightbox-en-ligne
+        {
+            display: flex;
+            flex-direction: row;
+            min-height: 80%;
+
+            .lightbox-nav-gauche
+            {
+                margin: auto 0 auto 0;
+                min-width: 10%;
+                img
+                {
+                    margin-left: 30px;
+                    &:hover
+                    {
+                        cursor: pointer;
+                        animation: pulse_v3 1.3s ease-in-out alternate infinite;
+                    }
+                }
+            }
+
+            .lightbox-photo
+            {
+                min-width: 80%;
+                min-height: 80%;
+
+                img
+                {
+                    max-width: 100%;
+                    max-height: 100%;
+                    display: block;
+                    margin: auto auto;
+                    object-fit: contain;
+                    object-position: top;
+                }
+            }
+
+            .lightbox-nav-droite
+            {
+                margin: auto;
+                min-width: 10%;
+                img
+                {
+                    margin-left: 30px;
+                    &:hover
+                    {
+                        cursor: pointer;
+                        animation: pulse_v3 1.3s ease-in-out alternate infinite;
+                    }
+                }
+            }
+        }
+            .lightbox-description
+            {
+                display: flex;
+                flex-direction: row;
+                min-height: 10%;
+                min-width: 80%;
+                justify-content: center;
+                
+                p
+                {
+                    margin: auto 10%;
+                    font-family: 'Poppins-Medium-500';
+                    font-size: 14px;
+                    color: $blanc;
+                }
+            }
+    }
+
+    .lightbox-contenaire-principal.active
+    {
+        z-index: 99; //En haut de la pile
+        opacity: 1;
+        transition: opacity 1s ease-in-out;
+    }
+/* Fin lightbox */
+
+
+/* gestion partie mobile */
+    @media screen and (max-width: 1000px) 
+    {
+        body 
+        {
+            width: 375px;
+            height: auto;
+        }
+
+        body.active 
+        {
+            width: 375px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        // Le menu pour mobile peut s'afficher //
+        .menu-mobile
+        {
+            display: revert; // Annule le display: none
+        }
+
+        .menu-mobile.active 
+        {
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+            z-index: 10;
+        }
+
+        .menu-mobile /* gestion du menu (mobile / petit écran) lorsqu'on clique sur la hamburger */
+        {
+            border: 1px solid black;
+            opacity: 0;
+            width: 375px;
+            height: 100vh;
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            background-color: $rouge-fonce;
+            padding: 0;
+            margin: 0;
+            transition: top 0.5s ease;
+            text-align: center;
+            transition: opacity 1s ease-in-out;
+
+            .en-tete
+            {
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: baseline;
+                background-color: $blanc;
+                width: 375px;
+                height: 71px;
+                margin: auto 0 auto 0;
+
+                img.mobile
+                {
+                    margin: auto 0 auto 20px;
+                    width: 138px;
+                    height: 9px;
+                }
+
+                img.croix-btn 
+                {
+                    margin: auto 20px auto 0;
+                    width: 27px;
+                    height: 18px;
+
+                    &:hover 
+                    {
+                        cursor: pointer;
+                        animation: pulse 1s ease-in-out alternate infinite;
+                    }
+
+                }
+            }
+
+            ul 
+            {
+                padding-top: 70%;
+                display: flex;
+                flex-direction: column;
+                margin: 0 0 0 0;
+
+                li
+                {
+                    margin: 15px auto 15px auto;
+                    font-family: 'SpaceMono-Regular-400';
+                    font-size: 44px;
+                    line-height: 65px;
+
+                    a
+                    {
+                        color: $blanc;
+                    }
+                }
+            }        
+        }
+
+        .top-barre 
+        {
+            display: none;
+        }
+
+        .top-barre-mobile
+        {
+            display: contents;
+            position: relative;
+            height: 72px;
+            margin: auto 20px auto 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+
+            img.mobile
+            {
+                width: 138px;
+                height: 9px;
+            }
+
+            img.hamburger
+            {
+                padding-top: 5px;
+                cursor: pointer; //Change le curseur pour faire comprendre qu'une action est possible.
+
+                &:hover 
+                {
+                    animation: pulse 1s ease-in-out alternate infinite;
+                }
+            }
+        }   
+
+        .banniere
+        {
+            width: 375px;
+            height: 253px;
+        }
+
+        p.event
+        { 
+            margin: 0;
+            padding-top: 100px;
+            font-size: 27px;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: $blanc;
+            text-align: center;
+            align-content: center;
+        } 
+
+        .contenaire-filtre
+        {
+            overflow: hidden;
+            margin: 40px 0 0 0;
+            display: inline-flex;
+            flex-direction: column;
+            min-width: 100px;
+            height: auto;
+            align-content: center;
+            justify-content: center;
+            align-items: center;
+
+            select 
+            {
+                margin: 15px auto 0 auto;
+            }
+
+            select#select-format 
+            {   
+                margin: 15px auto 0 auto;             
+            }   
+        }
+
+        .contenaire-photo
+        {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-width: 100%;
+            height: auto; 
+            overflow: hidden;
+        }
+
+        .vignette-accueil
+        {
+            width: 317px;
+            height: 278px;
+
+
+            .oeil 
+            { 
+                width: 317px;
+                height: 278px;
+            }
+
+            .full-screen 
+            {
+                margin: 15px 0 0 260px;
+                border: solid 1.2px rgba($blanc, 1);
+            }
+
+            p.ref-photo
+            {
+                z-index: 3;
+                position: absolute;
+                margin: 250px 0 0 250px;  
+            }
+
+            p.cat-photo
+            {
+                z-index: 3;
+                position: absolute;
+                margin: 250px 0 0 10px;
+            }
+
+            img
+            {
+                position: relative;
+                width: 317px;
+                height: 278px; 
+                object-fit: cover;  
+                object-position: center;
+                z-index:4;  
+
+                &:hover
+                {
+                    filter:brightness(50%);
+                    z-index: 1;
+                }
+            }
+        }
+
+        footer 
+        {
+            min-width: 100%;
+            height: 207px; 
+            justify-content: center;
+            align-items: center;
+
+            ul
+            {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                margin: 0 auto 0 auto;
+            }
+    
+            li
+            {
+                margin: 0 auto 0 auto;
+                padding-top: 20px;
+            }  
+        }
+
+        .contact-modal 
+        {
+            height: 100vh; /* Hauteur de l'écran */
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0); /* mettre un fond qui assombrit */   
+        }
+
+        .contact-contenu 
+        {
+            width: 375px; /* Largeur de la zone blanche du formulaire de contact */
+            height: 100vh;
+            margin: 0 auto;
+        }
+    
+        /* reglage mobile pour single-photo */
+            main
+            {
+                display: flex;
+                flex-direction: column;
+                align-items:center;
+                min-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .separation 
+            {
+                min-width: 100%;
+                margin: 0 auto 20px auto;
+            }
+
+            .container-info
+            {
+                margin: 2px auto 0 auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content:center;
+                min-width: 80%;
+                overflow: hidden;
+
+                .info
+                {
+                    order: 2; 
+                    min-width: 80%; //Les infos sont en position 2 sur la version mobile soit après la photo
+                }
+
+                hr 
+                {
+                    position: relative;
+                    min-width: 150%;
+                    margin: 10px 0 10px 0;
+                    padding: 0;
+                    right: 25%;
+                }
+
+                h2 
+                {
+                    margin: 5px 0 5px 0;
+                    max-width: 100px;
+                    font-size: 46px;
+                    line-height: 50px; //pour mieux aérer le titre
+                }
+
+                .vignette-moyenne 
+                {
+                    min-width: 80%;
+                    height: auto;
+                    overflow: hidden;
+
+                    img 
+                    {
+                        margin-top: 10px;
+                        width: 100%;
+                        height: auto;
+                        object-fit: fill;
+                        object-position:center;
+                    }
+                }
+
+                .aperçu 
+                {
+                    display: none; //Sur la version mobile, pas de miniature avec flèche navigable
+                }     
+            } 
+
+            .interet
+            {
+                width: 80%;
+                height: auto;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                p 
+                {
+                    font-family: 'Poppins-Light-300';
+                    font-size: 14px;
+                    line-height: 21px;
+                    font-weight: 300;
+                    margin: 10px auto 10px auto;
+                }
+
+                button 
+                {
+                    background-color: $gris-moyen; 
+                    border: none;
+                    border-radius: 2px;
+                    color: $noir;
+                    text-align: center;
+                    text-decoration: none;
+                    display: inline-block;
+                    font-size: 12px;
+                    font-family: 'SpaceMono-Regular-400';
+                    padding: 20px 120px 20px 120px;
+                    margin: 10px 0 0 0;
+
+                    &:hover 
+                    {
+                        background-color: $gris-clair; 
+                        cursor: pointer; // Modifie le pointeur de la souris au survol pour faire comprendre qu'une action est possible.
+                    }
+                }
+            }
+    
+            .section-preference 
+            {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin: 0 auto -50px auto;
+
+                h3 
+                {
+                    font-family: 'SpaceMono-Regular-400', sans-serif;
+                    font-size: 18px;
+                    line-height: 26.66px;
+                    text-transform: uppercase;
+                    margin: 5px auto 20px auto;
+                }
+
+                .container-preference
+                {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content:center;
+                    align-items: center;  
+                    margin-bottom: 100px;       
+
+                    .container-image
+                    {
+                        width: 317px;
+                        height: 278px; 
+                        overflow: hidden;
+                        margin: 20px 0 0 0;
+
+                        .oeil 
+                        { 
+                            width: 317px;
+                            height: 278px;
+                            position: absolute;
+                            z-index: 3;
+                            background-image: url("./img/Icon_eye.svg");
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                        }
+
+                        .full-screen 
+                        {
+                            width:34px;
+                            height: 34px;
+                            position: absolute;
+                            z-index: 3;
+                            background-image: url("./img/Icon_fullscreen.svg");
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            //pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                            border-radius: 17px;
+                            margin: 15px 0 0 270px;
+                            border: solid 1.2px rgba($blanc, 1);
+
+                            &:hover
+                            {
+                                z-index: 5;
+                                cursor: pointer;
+                                animation: pulse 1s ease-in-out  infinite; // Petite animation pour actionner lightbox.
+                            }
+                        }
+
+                        p.ref-photo
+                        {
+                            z-index: 3;
+                            position: absolute;
+                            margin: 245px 0 0 10px;
+                            font-family: 'Poppins-Medium-500';
+                            font-size: 14px;
+                            line-height: 21px;
+                            color: $blanc;
+                            text-transform: uppercase;
+                            text-shadow: $noir 0.1em 0.1em 0.1em;
+                            pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                        }
+
+                        p.cat-photo
+                        {
+                            z-index: 3;
+                            position: absolute;
+                            margin: 245px 0 0 240px;
+                            font-family: 'SpaceMono-Regular-400';
+                            font-size: 14px;
+                            line-height: 20.73px;
+                            letter-spacing: 10%;
+                            color: $blanc;
+                            text-transform: uppercase;
+                            text-shadow: $noir 0.1em 0.1em 0.1em;
+                            pointer-events: none; //Ignore les événements pour éviter bug d'interférence !
+                        }
+
+                        img 
+                        {
+                            position: relative;
+                            width: 317px;
+                            height: 278px; 
+                            object-fit: cover;  
+                            object-position: center;
+                            z-index: 4;
+
+                            &:hover
+                            {
+                                filter:brightness(50%);
+                                z-index: 1;
+                            }
+                        }
+                    }
+                }
+            }
+        /*Fin reglage mobile pour single-photo */
+
+        /* Début lightbox */ 
+            // La lightbox pour la version mobile est programmé de sorte que le portable soit positionné en mode paysage. //
+            .lightbox-contenaire-principal
+            {
+                .lightbox-croix
+                {
+                    min-height: 10%;
+                    img 
+                    {
+                        margin: 30px 0 0 95%; 
+                    }
+                }
+
+                .lightbox-en-ligne
+                {
+                    .lightbox-nav-gauche
+                    {
+                        min-width: 10%; 
+                    }
+
+                    .lightbox-photo
+                    {
+                        min-width: 80%;                       
+                    }
+
+                    .lightbox-nav-droite
+                    {
+                        min-width: 10%;
+                        img
+                        {
+                            margin-left: -80px; 
+                        }
+                    }
+                }
+            }
+        /* Fin lightbox */  
+    }
+/*Fin gestion partie mobile */
