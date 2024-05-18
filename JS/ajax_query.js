@@ -41,12 +41,12 @@ jQuery(function ($)
     custom_Select('#select-format', '#format', '')
     custom_Select('#select-trie', '#trie', '')
 
-  var page = 2 // Page courante
+  var page = 1 // Page courante
   var nbre = 8 // Post par page
   var cat = $('#select-categorie').val()
   var format = $('#select-format').val()
   var ordre = 'DESC' //Par défaut, on affiche les photos les plus récentes.
-  
+
   var data = {
     'action': 'charger_demarrage',
     'page': page,
